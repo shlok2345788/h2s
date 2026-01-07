@@ -2,19 +2,42 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import AnalyzerPage from './pages/AnalyzerPage';
 import Navbar from './components/Navbar';
+import AuthPage from './pages/AuthPage';
+import ApiKeysPage from './pages/ApiKeysPage';
+import DashboardPage from './pages/DashboardPage';
+import DeveloperDocsPage from './pages/DeveloperDocsPage';
+import { OverviewDashboard } from './pages/OverviewDashboard';
+import { BulkAnalyzerPage } from './pages/BulkAnalyzerPage';
+import { GoogleOAuthProvider } from './components/GoogleOAuthProvider';
 
 function App() {
   return (
-    <Router>
-      <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950">
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/analyzer" element={<AnalyzerPage />} />
-        </Routes>
-      </div>
-    </Router>
+    <GoogleOAuthProvider>
+      <Router
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
+        <div className="app-shell">
+          <Navbar />
+          <main className="page-body">
+            <Routes>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/auth" element={<AuthPage />} />
+              <Route path="/dashboard" element={<OverviewDashboard />} />
+              <Route path="/settings" element={<DashboardPage />} />
+              <Route path="/apikeys" element={<ApiKeysPage />} />
+              <Route path="/analyze" element={<AnalyzerPage />} />
+              <Route path="/bulk" element={<BulkAnalyzerPage />} />
+              <Route path="/docs" element={<DeveloperDocsPage />} />
+            </Routes>
+          </main>
+        </div>
+      </Router>
+    </GoogleOAuthProvider>
   );
 }
 
 export default App;
+

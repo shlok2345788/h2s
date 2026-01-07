@@ -1,0 +1,47 @@
+{
+  "feature_names": [
+    "avg_sentence_length",
+    "avg_word_length",
+    "clause_count",
+    "passive_voice_ratio",
+    "negation_count",
+    "question_mark_count",
+    "word_count",
+    "sentence_count",
+    "flesch_reading_ease",
+    "flesch_kincaid_grade",
+    "gunning_fog_index",
+    "smog_index",
+    "highest_bloom_level",
+    "bloom_level_1_remember",
+    "bloom_level_2_understand",
+    "bloom_level_3_apply",
+    "bloom_level_4_analyze",
+    "bloom_level_5_evaluate",
+    "bloom_level_6_create",
+    "embedding_magnitude",
+    "embedding_entropy",
+    "embedding_pca_0",
+    "embedding_pca_1",
+    "embedding_pca_2",
+    "embedding_pca_3",
+    "embedding_pca_4",
+    "embedding_pca_5",
+    "embedding_pca_6",
+    "embedding_pca_7"
+  ],
+  "difficulty_metrics": {
+    "accuracy": 1.0,
+    "f1_score": 1.0,
+    "cv_mean": 0.7072727272727273,
+    "cv_std": 0.19686803903475147
+  },
+  "quality_metrics": {
+    "mae": 3.6701446539571543,
+    "rmse": 5.940287675173764,
+    "r2": 0.9094554715037129,
+    "cv_mean": -2.5213476496672365,
+    "cv_std": 2.699108065039154
+  },
+  "num_training_samples": 52
+}

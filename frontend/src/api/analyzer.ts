@@ -1,68 +1,170 @@
 import axios from 'axios';
-import type { AnalysisResult } from '../types';
+import type {
+  AnalyzeRequest,
+  AnalysisResult,
+  RegisterRequest,
+  RegisterResponse,
+} from '../types';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
-export const analyzeQuestion = async (questions: string[]): Promise<AnalysisResult[]> => {
+// Email/Password types
+export interface EmailRegisterPayload {
+  instituteName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
+export interface EmailLoginPayload {
+  email: string;
+  password: string;
+}
+
+export interface AuthResponse {
+  success: boolean;
+  message: string;
+  user: {
+    id: string;
+    instituteName: string;
+    email: string;
+  };
+  token: string;
+  apiKey: string;
+}
+
+// Google OAuth type
+interface GoogleAuthPayload {
+  idToken: string;
+  email: string;
+  displayName: string;
+  uid: string;
+}
+
+interface GoogleAuthResponse {
+  apiKey: string;
+  instituteName: string;
+  message: string;
+}
+
+// Email/Password Registration
+export const registerWithEmail = async (
+  payload: EmailRegisterPayload,
+): Promise<AuthResponse> => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/api/analyze`, {
-      questions,
-    });
-    return response.data.results;
-  } catch (error) {
-    console.error('API call failed, using mock data:', error);
-    // Fallback to mock analysis if API fails
-    return mockAnalyze(questions);
+    const response = await axios.post(`${API_BASE_URL}/auth/register-email`, payload);
+    return response.data;
+  } catch (error: any) {
+    const errorMessage = error.response?.data?.error || error.message || 'Registration failed';
+    throw new Error(errorMessage);
   }
 };
 
-// Mock analysis for MVP
-const mockAnalyze = (questions: string[]): AnalysisResult[] => {
-  return questions.map((question) => {
-    const wordCount = question.split(' ').length;
-    const hasQuestionMark = question.includes('?');
-    const hasComplexWords = /algorithm|complexity|implement|architecture|optimization/i.test(question);
-    
-    // Mock difficulty logic
-    let difficulty: 'Easy' | 'Medium' | 'Hard';
-    if (wordCount < 10 && hasQuestionMark) {
-      difficulty = 'Easy';
-    } else if (hasComplexWords || wordCount > 20) {
-      difficulty = 'Hard';
-    } else {
-      difficulty = 'Medium';
-    }
+// Email/Password Login
+export const loginWithEmail = async (
+  payload: EmailLoginPayload,
+): Promise<AuthResponse> => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/auth/login-email`, payload);
+    return response.data;
+  } catch (error: any) {
+    const errorMessage = error.response?.data?.error || error.message || 'Login failed';
+    throw new Error(errorMessage);
+  }
+};
 
-    // Mock quality score
-    let qualityScore = 70;
-    if (hasQuestionMark) qualityScore += 10;
-    if (wordCount > 5 && wordCount < 30) qualityScore += 10;
-    if (!hasComplexWords && wordCount < 8) qualityScore -= 15;
-    qualityScore = Math.min(100, Math.max(0, qualityScore));
+// Legacy function for backward compatibility
+export const registerInstitute = async (
+  payload: RegisterRequest,
+): Promise<RegisterResponse> => {
+  const response = await axios.post(`${API_BASE_URL}/auth/register`, payload);
+  return response.data;
+};
 
-    // Mock flags
-    const flags: string[] = [];
-    if (!hasQuestionMark && !question.match(/^(write|explain|describe|implement)/i)) {
-      flags.push('Ambiguous: Consider rephrasing as a clear question');
-    }
-    if (wordCount > 30) {
-      flags.push('Too Broad: Break into smaller questions');
-    }
-    if (wordCount < 5) {
-      flags.push('Needs Context: Add more details');
-    }
+// Google OAuth
+export const generateApiKeyFromGoogle = async (
+  payload: GoogleAuthPayload,
+): Promise<GoogleAuthResponse> => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/auth/google`, payload);
+    return response.data;
+  } catch (error: any) {
+    const errorMessage = error.response?.data?.error || error.message || 'Google authentication failed';
+    throw new Error(errorMessage);
+  }
+};
 
-    // Mock keywords
-    const keywords = question
-      .toLowerCase()
-      .match(/\b(algorithm|complexity|function|data|structure|react|node|api|database|query|sort|search|array|tree|graph)\b/g) || [];
 
-    return {
-      question,
-      difficulty,
-      qualityScore,
-      flags,
-      keywords: [...new Set(keywords)],
-    };
-  });
+export const analyzeQuestion = async (
+  payload: AnalyzeRequest,
+  apiKey?: string,
+): Promise<AnalysisResult> => {
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}/analyze-question`,
+      payload,
+      {
+        headers: apiKey ? { 'x-api-key': apiKey } : {},
+      },
+    );
+
+    return response.data.result;
+  } catch (error) {
+    console.error('API call failed, falling back to mock data:', error);
+    return mockAnalyze(payload);
+  }
+};
+
+// Lightweight mock analysis to keep the UI functional offline
+const mockAnalyze = ({ question, subject, type }: AnalyzeRequest): AnalysisResult => {
+  const wordCount = question.split(' ').length;
+  const hasQuestionMark = question.includes('?');
+  const hasComplexWords = /algorithm|complexity|implement|architecture|optimization|analysis|compute/i.test(question);
+
+  let difficulty: 'Easy' | 'Medium' | 'Hard';
+  if (wordCount < 12 && hasQuestionMark) {
+    difficulty = 'Easy';
+  } else if (hasComplexWords || wordCount > 24) {
+    difficulty = 'Hard';
+  } else {
+    difficulty = 'Medium';
+  }
+
+  let qualityScore = 68;
+  if (hasQuestionMark) qualityScore += 8;
+  if (wordCount >= 12 && wordCount <= 32) qualityScore += 12;
+  if (!hasComplexWords && wordCount < 8) qualityScore -= 15;
+  qualityScore = Math.min(100, Math.max(30, qualityScore));
+
+  const flags: string[] = [];
+  if (!hasQuestionMark && !question.match(/^(write|explain|describe|implement)/i)) {
+    flags.push('Ambiguous phrasing — consider using an explicit ask.');
+  }
+  if (wordCount > 36) {
+    flags.push('Broad scope — break this into smaller parts.');
+  }
+  if (wordCount < 6) {
+    flags.push('Needs more context for a fair answer.');
+  }
+
+  const keywords = question
+    .toLowerCase()
+    .match(/\b(algorithm|complexity|function|react|node|api|database|query|sort|graph|matrix|probability)\b/g) || [];
+
+  return {
+    question,
+    subject,
+    questionType: type,
+    difficulty,
+    qualityScore,
+    flags,
+    explanation: difficulty === 'Hard'
+      ? 'High cognitive load detected from abstract or technical terms.'
+      : 'Question phrasing appears concise and direct.',
+    suggestedFix:
+      flags.length > 0
+        ? 'Rewrite with clearer intent and constrain the scope to one skill.'
+        : 'Question looks balanced; add rubric details if needed.',
+    keywords: [...new Set(keywords)],
+  };
 };

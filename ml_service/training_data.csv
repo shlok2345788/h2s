@@ -1,0 +1,53 @@
+question,difficulty,quality_score
+"What is photosynthesis?",Easy,75
+"Define mitochondria.",Easy,70
+"List the planets in our solar system.",Easy,65
+"Explain the water cycle.",Easy,78
+"What does DNA stand for?",Easy,72
+"How do plants use chlorophyll?",Easy,76
+"Describe the process of respiration.",Medium,82
+"What is the relationship between photosynthesis and respiration?",Medium,85
+"Explain how natural selection leads to evolution.",Medium,88
+"Analyze the impact of deforestation on ecosystems.",Medium,86
+"Compare and contrast mitochondria and chloroplasts.",Medium,84
+"Evaluate the effectiveness of different conservation strategies.",Medium,80
+"How does cellular respiration produce ATP?",Medium,83
+"What factors influence enzyme activity?",Medium,81
+"Interpret this graph showing population growth over time.",Medium,79
+"Assess the validity of this scientific hypothesis based on the experimental data.",Hard,90
+"Analyze the economic impact of trade policies on developing nations.",Hard,87
+"Evaluate the ethical implications of genetic engineering in humans.",Hard,92
+"Critique the methodology used in this environmental study and suggest improvements.",Hard,89
+"Design an experiment to test the hypothesis that temperature affects enzyme kinetics.",Hard,91
+"How does the Second Law of Thermodynamics constrain biological systems?",Hard,88
+"Synthesize information from multiple sources to propose solutions for climate change.",Hard,93
+"Evaluate competing theoretical frameworks for understanding photosynthetic efficiency.",Hard,85
+"What is the thermodynamic basis for the spontaneity of reactions in organisms?",Hard,86
+"Formulate a comprehensive model integrating cellular respiration with metabolic regulation.",Hard,94
+"Analyze phototropism as a plant response to environmental stimuli, including molecular mechanisms.",Hard,89
+"It is important.",Easy,15
+"What? How? Why?",Easy,20
+"What is the historical, cultural, and economic significance of the Silk Road and how did it impact trade relationships?",Hard,45
+"Photosynthesis occurs.",Easy,25
+"The ecosystem contains many organisms, some of which are plants and others are animals, and they interact in various ways.",Medium,35
+"Explain photosynthesis without using scientific terminology.",Easy,30
+"Does water boil?",Easy,40
+"What is the relationship between temperature and molecular kinetics in enzymatic reactions?",Hard,82
+"Compare photosynthesis and cellular respiration, discussing their complementary roles in ecosystems.",Medium,87
+"Discuss the role of ATP in cellular energy transfer.",Medium,84
+"How do mutations contribute to genetic variation and evolution?",Medium,86
+"Analyze the factors that affect enzyme activity in biological systems.",Medium,85
+"Evaluate evidence for evolution from multiple disciplines.",Hard,91
+"Design an experiment to test osmosis in plant cells using different solution concentrations.",Medium,88
+"Explain the mechanism of protein synthesis including transcription and translation.",Medium,83
+"What are the ecological consequences of keystone species extinction?",Medium,82
+"Assess the validity of germ theory in explaining infectious diseases.",Hard,89
+"Analyze the relationship between genotype and phenotype using Mendelian genetics.",Medium,86
+"Evaluate the effectiveness of different treatment strategies for genetic disorders.",Hard,88
+"How do hormones regulate homeostasis in multicellular organisms?",Medium,84
+"Interpret the significance of the Cambrian explosion in evolutionary history.",Hard,87
+"Synthesize knowledge of cell biology to explain how cancer develops and progresses.",Hard,90
+"Evaluate the evidence for endosymbiotic theory and its implications.",Hard,89
+"What mechanisms allow organisms to maintain homeostasis despite environmental changes?",Medium,85
+"Analyze the coevolution of predators and prey in population dynamics.",Hard,86
+"Examine the role of genes in determining organism phenotype and behavior.",Medium,83

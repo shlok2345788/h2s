@@ -1,0 +1,14 @@
+flask>=3.1.0
+flask-cors>=6.0.0
+numpy>=2.3.0
+pandas>=2.3.0
+scikit-learn>=1.8.0
+xgboost>=3.1.0
+sentence-transformers>=5.2.0
+shap>=0.50.0
+torch>=2.9.0
+matplotlib>=3.10.0
+joblib>=1.5.0
+scipy>=1.16.0
+transformers>=4.57.0
+numba>=0.63.0

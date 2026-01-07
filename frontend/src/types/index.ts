@@ -3,13 +3,30 @@ export interface AnalysisResult {
   difficulty: 'Easy' | 'Medium' | 'Hard';
   qualityScore: number;
   flags: string[];
+  explanation: string;
+  suggestedFix: string;
+  subject?: string;
+  questionType?: 'MCQ' | 'Theory';
   keywords?: string[];
 }
 
 export interface AnalyzeRequest {
-  questions: string[];
+  question: string;
+  subject: string;
+  type: 'MCQ' | 'Theory';
 }
 
 export interface AnalyzeResponse {
-  results: AnalysisResult[];
+  result: AnalysisResult;
+}
+
+export interface RegisterRequest {
+  institute: string;
+  email: string;
+  password: string;
+}
+
+export interface RegisterResponse {
+  apiKey: string;
+  institute: string;
 }
