@@ -16,39 +16,52 @@ export const StatCard = ({ title, value, subtitle, trend, trendValue, icon }: St
     return 'text-slate-400';
   };
 
+  const getTrendIcon = () => {
+    if (trend === 'up') return '↑';
+    if (trend === 'down') return '↓';
+    return '→';
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ scale: 1.02, translateY: -5 }}
+      whileHover={{ scale: 1.03, translateY: -6 }}
       transition={{ duration: 0.2 }}
-      className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl border border-slate-700/50 p-6 shadow-2xl hover:shadow-[var(--accent)]/10 transition-all duration-300"
-      style={{
-        boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5)',
-      }}
+      className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800/95 to-slate-900/95 backdrop-blur-xl border border-slate-700/60 p-6 sm:p-7 shadow-2xl hover:shadow-[0_12px_40px_rgba(var(--accent-rgb),0.2)] hover:border-[rgba(var(--accent-rgb),0.4)] transition-all duration-300 group"
     >
-      <div 
-        className="absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl opacity-10"
-        style={{
-          background: `linear-gradient(to bottom right, var(--gradient-from), var(--gradient-to))`,
-        }}
-      />
-      <div className="relative z-10 flex items-start justify-between">
-        <div className="flex-1">
-          <div className="text-sm font-medium text-slate-400 mb-2">{title}</div>
-          <div className="text-4xl font-bold mb-3 bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">{value}</div>
-          {subtitle && <div className="text-sm text-slate-500">{subtitle}</div>}
-          {trend && trendValue && (
-            <div className={`text-sm mt-3 font-semibold flex items-center gap-1 ${getTrendColor()}`}>
-              {trend === 'up' && '↑ '}
-              {trend === 'down' && '↓ '}
-              {trendValue}
+      {/* Animated gradient background */}
+      <div className="absolute top-0 right-0 w-40 h-40 rounded-full blur-3xl opacity-10 bg-gradient-to-br from-[var(--gradient-from)] to-[var(--gradient-to)] transition-opacity duration-300 group-hover:opacity-20" />
+      
+      {/* Content */}
+      <div className="relative z-10">
+        {/* Header with Icon */}
+        <div className="flex items-start justify-between mb-5">
+          <div className="flex-1 min-w-0 pr-3">
+            <div className="text-xs sm:text-sm font-bold text-slate-400 mb-3 uppercase tracking-wider">
+              {title}
+            </div>
+            <div className="text-4xl sm:text-5xl font-extrabold mb-2 bg-gradient-to-r from-white via-slate-100 to-slate-200 bg-clip-text text-transparent leading-tight">
+              {value}
+            </div>
+            {subtitle && (
+              <div className="text-sm text-slate-500 font-semibold">
+                {subtitle}
+              </div>
+            )}
+          </div>
+          {icon && (
+            <div className="text-5xl sm:text-6xl opacity-25 filter drop-shadow-2xl flex-shrink-0 group-hover:opacity-35 transition-opacity">
+              {icon}
             </div>
           )}
         </div>
-        {icon && (
-          <div className="text-5xl opacity-30 filter drop-shadow-lg">
-            {icon}
+        
+        {/* Trend Indicator */}
+        {trend && trendValue && (
+          <div className={`text-sm font-bold flex items-center gap-2 ${getTrendColor()}`}>
+            <span className="text-lg font-extrabold">{getTrendIcon()}</span>
+            <span>{trendValue}</span>
           </div>
         )}
       </div>

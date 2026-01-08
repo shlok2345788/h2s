@@ -62,13 +62,6 @@ const Navbar = () => {
               <button
                 className="nav-link nav-link--secondary"
                 onClick={handleSignOut}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  fontSize: 'inherit',
-                  color: 'inherit',
-                }}
               >
                 Sign out
               </button>

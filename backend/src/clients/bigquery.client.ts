@@ -1,4 +1,4 @@
-import { BigQuery } from '@google-cloud/bigquery';
+d import { BigQuery } from '@google-cloud/bigquery';
 
 interface AnalyticsQuery {
   startDate?: string;

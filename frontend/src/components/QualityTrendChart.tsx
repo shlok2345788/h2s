@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useState, useEffect, useRef } from 'react';
 
 export interface QualityTrendData {
   date: string;
@@ -13,23 +14,47 @@ interface QualityTrendChartProps {
 
 export const QualityTrendChart = ({ data, title = 'Quality Score Trend' }: QualityTrendChartProps) => {
   const maxQuality = 100;
-  const height = 200;
-  const width = 600;
+  const height = 220;
   const padding = 40;
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  // Responsive width
+  const [width, setWidth] = useState(600);
+  
+  useEffect(() => {
+    const updateWidth = () => {
+      if (containerRef.current) {
+        const containerWidth = containerRef.current.clientWidth;
+        setWidth(Math.max(containerWidth - 32, 400));
+      }
+    };
+    
+    updateWidth();
+    window.addEventListener('resize', updateWidth);
+    return () => window.removeEventListener('resize', updateWidth);
+  }, []);
 
   const points = data.map((item, index) => {
-    const x = padding + (index / (data.length - 1)) * (width - 2 * padding);
+    const x = padding + (index / (data.length - 1 || 1)) * (width - 2 * padding);
     const y = height - padding - (item.avgQuality / maxQuality) * (height - 2 * padding);
     return { x, y, ...item };
   });
 
-  const pathData = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x},${p.y}`).join(' ');
+  const pathData = points.length > 0 ? points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x},${p.y}`).join(' ') : '';
 
   return (
-    <div className="rounded-2xl bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl border border-slate-700/50 p-6 shadow-2xl">
-      <div className="text-xl font-bold mb-6 bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">{title}</div>
-      <div className="relative">
-        <svg width={width} height={height} className="overflow-visible filter drop-shadow-xl">
+    <div className="rounded-2xl bg-gradient-to-br from-slate-800/95 to-slate-900/95 backdrop-blur-xl border border-slate-700/60 p-6 sm:p-8 shadow-2xl hover:shadow-[0_12px_40px_rgba(var(--accent-rgb),0.15)] transition-all duration-300 h-full flex flex-col">
+      <div className="text-xl sm:text-2xl font-bold mb-6 bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
+        {title}
+      </div>
+      <div ref={containerRef} className="relative w-full overflow-x-auto flex-1">
+        <svg 
+          width={width} 
+          height={height} 
+          viewBox={`0 0 ${width} ${height}`}
+          className="w-full h-auto overflow-visible filter drop-shadow-xl"
+          preserveAspectRatio="none"
+        >
           {/* Grid lines */}
           {[0, 25, 50, 75, 100].map((value) => {
             const y = height - padding - (value / maxQuality) * (height - 2 * padding);
@@ -41,10 +66,10 @@ export const QualityTrendChart = ({ data, title = 'Quality Score Trend' }: Quali
                   x2={width - padding}
                   y2={y}
                   stroke="#1e293b"
-                  strokeWidth="1"
+                  strokeWidth="1.5"
                   strokeDasharray="4"
                 />
-                <text x={padding - 10} y={y + 4} fill="#64748b" fontSize="12" textAnchor="end">
+                <text x={padding - 12} y={y + 4} fill="#64748b" fontSize="13" textAnchor="end" fontWeight="600">
                   {value}
                 </text>
               </g>
@@ -52,25 +77,30 @@ export const QualityTrendChart = ({ data, title = 'Quality Score Trend' }: Quali
           })}
 
           {/* Area under curve */}
-          <motion.path
-            d={`${pathData} L ${width - padding},${height - padding} L ${padding},${height - padding} Z`}
-            fill="url(#gradient)"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.3 }}
-            transition={{ duration: 0.8 }}
-          />
+          {pathData && (
+            <motion.path
+              d={`${pathData} L ${width - padding},${height - padding} L ${padding},${height - padding} Z`}
+              fill="url(#gradient)"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.35 }}
+              transition={{ duration: 1 }}
+            />
+          )}
 
           {/* Line */}
-          <motion.path
-            d={pathData}
-            fill="none"
-            stroke="url(#lineGradient)"
-            strokeWidth="4"
-            strokeLinecap="round"
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ duration: 1.5, ease: 'easeOut' }}
-          />
+          {pathData && (
+            <motion.path
+              d={pathData}
+              fill="none"
+              stroke="url(#lineGradient)"
+              strokeWidth="5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: 1.8, ease: 'easeOut' }}
+            />
+          )}
 
           {/* Data points */}
           {points.map((point, index) => (
@@ -78,21 +108,21 @@ export const QualityTrendChart = ({ data, title = 'Quality Score Trend' }: Quali
               <motion.circle
                 cx={point.x}
                 cy={point.y}
-                r="8"
+                r="10"
                 fill="var(--accent)"
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
-                transition={{ delay: index * 0.1, duration: 0.3 }}
+                transition={{ delay: index * 0.1 + 0.5, duration: 0.4 }}
                 className="filter drop-shadow-lg"
               />
               <motion.circle
                 cx={point.x}
                 cy={point.y}
-                r="5"
+                r="6"
                 fill="#0f172a"
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
-                transition={{ delay: index * 0.1 + 0.1, duration: 0.3 }}
+                transition={{ delay: index * 0.1 + 0.6, duration: 0.4 }}
               />
             </g>
           ))}
@@ -102,10 +132,11 @@ export const QualityTrendChart = ({ data, title = 'Quality Score Trend' }: Quali
             <text
               key={index}
               x={point.x}
-              y={height - padding + 20}
+              y={height - padding + 22}
               fill="#64748b"
-              fontSize="10"
+              fontSize="11"
               textAnchor="middle"
+              fontWeight="600"
             >
               {new Date(point.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
             </text>
@@ -114,7 +145,7 @@ export const QualityTrendChart = ({ data, title = 'Quality Score Trend' }: Quali
           {/* Gradient definitions */}
           <defs>
             <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.6" />
+              <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.7" />
               <stop offset="100%" stopColor="var(--accent)" stopOpacity="0" />
             </linearGradient>
             <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -130,13 +161,9 @@ export const QualityTrendChart = ({ data, title = 'Quality Score Trend' }: Quali
       <div className="mt-6 flex justify-center gap-6 text-sm">
         <div className="flex items-center gap-2">
           <div 
-            className="w-3 h-3 rounded-full shadow-lg"
-            style={{
-              backgroundColor: 'var(--accent)',
-              boxShadow: '0 4px 6px rgba(var(--accent-rgb), 0.5)',
-            }}
+            className="w-4 h-4 rounded-full shadow-lg bg-[var(--accent)] shadow-[rgba(var(--accent-rgb),0.5)]"
           />
-          <span className="text-slate-300">Average Quality Score</span>
+          <span className="text-slate-300 font-semibold">Average Quality Score</span>
         </div>
       </div>
     </div>

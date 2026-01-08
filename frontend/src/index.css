@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap');
 
 :root {
@@ -61,11 +65,21 @@ a {
   width: 100%;
 }
 
+.dashboard-body {
+  flex: 1;
+  padding: 0;
+  max-width: 100%;
+  margin: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
 .navbar {
   position: fixed;
   top: 0;
   width: 100%;
   background: rgba(15, 23, 42, 0.9);
+  -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
   z-index: 50;
@@ -121,6 +135,24 @@ a {
   box-shadow: 0 12px 30px rgba(var(--accent-rgb), 0.4);
 }
 
+.nav-link--secondary {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: 600;
+  padding: 10px 14px;
+  border-radius: 10px;
+  color: var(--muted);
+  transition: all 0.2s ease;
+}
+
+.nav-link--secondary:hover {
+  color: var(--text);
+  background: rgba(var(--accent-rgb), 0.15);
+}
+
 .nav-link:hover {
   color: var(--text);
   background: rgba(var(--accent-rgb), 0.15);
@@ -168,6 +200,14 @@ a {
   margin-top: 8px;
 }
 
+.cta-row--flush {
+  margin: 0;
+}
+
+.cta-row--spaced {
+  margin-top: 12px;
+}
+
 .btn {
   border: none;
   border-radius: 12px;
@@ -207,6 +247,7 @@ a {
 
 .panel {
   background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.8));
+  -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
   border: 1px solid var(--border);
   border-radius: 16px;
@@ -339,6 +380,7 @@ a {
 
 .result-card {
   background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.8));
+  -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
   border: 1px solid var(--border);
   border-radius: 16px;
@@ -404,6 +446,10 @@ a {
   color: var(--muted);
 }
 
+.api-key-text {
+  letter-spacing: 0.4px;
+}
+
 .section-title {
   margin: 0 0 12px;
   font-size: 20px;
@@ -414,10 +460,22 @@ a {
   color: var(--muted);
 }
 
+.small-text--spaced {
+  margin-top: 10px;
+}
+
+.small-text--spaced-sm {
+  margin-top: 6px;
+}
+
 .list-columns {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 12px;
+}
+
+.list-columns--spaced {
+  margin-top: 12px;
 }
 
 .timeline-item {
@@ -441,6 +499,10 @@ a {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 14px;
+}
+
+.two-column--spaced {
+  margin-top: 12px;
 }
 
 .badge-soft {
@@ -500,6 +562,30 @@ a {
   transition: width 0.3s ease;
 }
 
+.usage-fill--65 {
+  width: 65%;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.2;
+    transform: scale(1.1);
+  }
+}
+
 @media (max-width: 720px) {
   .navbar__inner {
     padding: 14px 18px;
@@ -507,6 +593,10 @@ a {
 
   .page-body {
     padding: 88px 16px 32px;
+  }
+
+  .dashboard-body {
+    padding: 0;
   }
 
   .api-key-box {

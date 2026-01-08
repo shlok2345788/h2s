@@ -61,10 +61,10 @@ const DashboardPage = () => {
             <span className="pill">Header: x-api-key</span>
           </div>
           <div className="api-key-box">
-            <span className="muted" style={{ letterSpacing: 0.4 }}>
+            <span className="muted api-key-text">
               {revealed ? apiKey || 'No key set' : maskKey(apiKey)}
             </span>
-            <div className="cta-row" style={{ margin: 0 }}>
+            <div className="cta-row cta-row--flush">
               <button
                 className="btn btn-secondary"
                 onClick={() => setRevealed((r) => !r)}
@@ -80,10 +80,10 @@ const DashboardPage = () => {
               </button>
             </div>
           </div>
-          <p className="small-text" style={{ marginTop: 10 }}>
+          <p className="small-text small-text--spaced">
             Rotate keys from the API Keys page. Keep keys out of screenshots and issue per-environment credentials.
           </p>
-          <div className="list-columns" style={{ marginTop: 12 }}>
+          <div className="list-columns list-columns--spaced">
             <div className="timeline-item">
               <strong>Google Auth</strong>
               <p className="small-text">
@@ -109,23 +109,23 @@ const DashboardPage = () => {
               <div className="stat-value">3,240</div>
               <div className="stat-label">requests this month</div>
               <div className="usage-meter">
-                <div className="usage-fill" style={{ width: '65%' }} />
+                <div className="usage-fill usage-fill--65" />
               </div>
-              <p className="small-text" style={{ marginTop: 6 }}>
+              <p className="small-text small-text--spaced-sm">
                 Limit: 5,000 req/mo (raise via support)
               </p>
             </div>
             <div className="stat-card">
               <div className="stat-value">282 ms</div>
               <div className="stat-label">p95 latency</div>
-              <p className="small-text" style={{ marginTop: 6 }}>
+              <p className="small-text small-text--spaced-sm">
                 Based on last 1k calls (mock telemetry).
               </p>
             </div>
             <div className="stat-card">
               <div className="stat-value">99.9%</div>
               <div className="stat-label">success rate</div>
-              <p className="small-text" style={{ marginTop: 6 }}>
+              <p className="small-text small-text--spaced-sm">
                 Retries recommended for 429/5xx with jitter.
               </p>
             </div>
@@ -141,7 +141,7 @@ const DashboardPage = () => {
             Enable the advanced model for higher fidelity scoring and richer explanations. Includes
             SHAP-based token attributions, Bloom verbs weighting, and readability-aware calibration.
           </p>
-          <div className="two-column" style={{ marginTop: 12 }}>
+          <div className="two-column two-column--spaced">
             <div className="timeline-item">
               <div className="badge-soft">Model: Next-gen (mock)</div>
               <p className="small-text">
@@ -157,7 +157,7 @@ const DashboardPage = () => {
               </p>
             </div>
           </div>
-          <div className="cta-row" style={{ marginTop: 12 }}>
+          <div className="cta-row cta-row--spaced">
             <a className="btn btn-primary" href="/docs">
               View developer docs
             </a>
